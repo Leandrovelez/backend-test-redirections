@@ -4,19 +4,19 @@ Esse documento visa coletar feedbacks sobre o teste de desenvolvimento. Desde o 
 ## Antes de Iniciar o Teste
 
 1 - Fale sobre suas primeiras impressões do Teste:
-> Resposta
+> À primeira vista, achei que o teste complicado, porque todos os outros testes que já fiz tinham menos etapas e requisitos. Depois de ler novamente e imaginar a estrutura na minha cabeça, entendi melhor e me pareceu menos complexo.
 
 2 - Tempo estimado para o teste:
-> Resposta
+> 24 horas
 
 3 - Qual parte você no momento considera mais difícil?
-> Resposta
+> Os testes de unidade e integração. Eu tenho estuda como fazer, mas nunca usei em projetos reais.
 
 4 - Qual parte você no momento considera que levará mais tempo?
-> Resposta
+> Os testes
 
 5 - Por onde você pretende começar?
-> Resposta
+> Pelas models e banco de dados
 
 
 ## Após o Teste
