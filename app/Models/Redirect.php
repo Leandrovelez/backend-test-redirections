@@ -16,7 +16,11 @@ class Redirect extends Model
         'last_redirect_at',
     ];
 
-    public function getCodeAtribute(){
+    public function getCodeAttribute(){
         return Hashids::encode($this->id);
+    }
+
+    public function logs(){
+        return $this->hasMany(RedirectLog::class);
     }
 }

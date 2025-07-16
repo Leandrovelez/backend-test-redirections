@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class RedirectLog extends Model
 {
     use HasFactory;
+
+    public function redirect()
+    {
+        return $this->belongsTo(Redirect::class);
+    }
 }
