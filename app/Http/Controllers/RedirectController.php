@@ -50,7 +50,51 @@ class RedirectController extends Controller
      */
     public function store(RedirectRequest $request)
     {
-        
+        try{
+            $request->validated();
+
+            $response = Http::get($request->url);
+            
+            if ($response->notFound()) {
+                return response()->json([
+                    'message' => 'A URL não foi encontrada (404)'
+                ], 422);
+            }
+
+            if ($response->forbidden()) {
+                return response()->json([
+                    'message' => 'A URL retornou acesso proibido (403)'
+                ], 422);
+            }
+
+            if (!$response->ok()) {
+                return response()->json([
+                    'message' => 'A URL não está acessível. Status retornado: ' . $response->status()
+                ], 422);
+            }
+
+            if (strpos($request->url, 'http://') === 0) {
+                return response()->json(['message' => 'A URL deve ser https'], 422);
+            }
+
+            if($redirect = Redirect::create($request->only(['url', 'status']))) {
+                $data = $redirect->toArray();
+                unset($data['id']);
+                $data['code'] = $redirect->code;
+
+                return response()->json($data, 201);
+            }
+
+            return response()->json(['message' => 'Erro ao criar o redirect'], 500);
+        } catch (ConnectionException | RequestException $e) {
+            return response()->json([
+                'message' => 'Não foi possível acessar a URL informada.'
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erro inesperado ao criar o redirect.'
+            ], 500);
+        }
     }
 
 
