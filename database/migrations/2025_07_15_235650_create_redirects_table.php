@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->enum('status', ['ativo', 'inativo'])->default('ativo');
             $table->string('url', 2048);
-            $table->dateTime('last_redirect_at');
+            $table->dateTime('last_redirect_at')->nullable();
             $table->timestamps();
         });
     }
