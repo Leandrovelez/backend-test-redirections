@@ -24,7 +24,7 @@ class RedirectRequest extends FormRequest
     public function rules()
     {
         return [
-            'status' => 'required|in:ativo,inativo',
+            'status' => 'sometimes|in:ativo,inativo',
             'url' => 'required|url|max:2048',
         ];
     }
@@ -38,7 +38,6 @@ class RedirectRequest extends FormRequest
     {
         return [
             'status.in' => 'O status deve ser "ativo" ou "inativo"',
-            'status.required' => 'O status é obrigatório',
             'url.url' => 'A URL deve ser um endereço válido',
             'url.max' => 'A URL não pode exceder 2048 caracteres',
             'url.required' => 'A URL é obrigatória'
