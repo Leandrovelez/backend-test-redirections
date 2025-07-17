@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PaginateRequest;
 use App\Http\Requests\RedirectRequest;
 use App\Models\Redirect;
 use Illuminate\Http\Client\RequestException;
@@ -16,7 +17,7 @@ class RedirectController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function index(RedirectRequest $request)
+    public function index(PaginateRequest $request)
     {
         $request->validated();
 
