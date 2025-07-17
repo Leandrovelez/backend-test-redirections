@@ -24,10 +24,8 @@ class RedirectRequest extends FormRequest
     public function rules()
     {
         return [
-            'page' => 'sometimes|integer',
-            'per_page' => 'sometimes|integer',
-            'status' => 'sometimes|in:ativo,inativo',
-            'url' => 'sometimes|url|max:2048',
+            'status' => 'required|in:ativo,inativo',
+            'url' => 'required|url|max:2048',
         ];
     }
 
@@ -39,11 +37,11 @@ class RedirectRequest extends FormRequest
     public function messages()
     {
         return [
-            'page.integer' => 'A página deve ser um número inteiro',
-            'per_page.integer' => 'O número de itens por página deve ser um número inteiro',
             'status.in' => 'O status deve ser "ativo" ou "inativo"',
+            'status.required' => 'O status é obrigatório',
             'url.url' => 'A URL deve ser um endereço válido',
             'url.max' => 'A URL não pode exceder 2048 caracteres',
+            'url.required' => 'A URL é obrigatória'
         ];
     }
 }
