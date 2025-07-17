@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\RedirectController;
+use App\Http\Controllers\API\RedirectController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 

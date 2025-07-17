@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('redirect_id');
             $table->string('ip', 15)->nullable();
             $table->string('user_agent', 512)->nullable();
-            $table->json('headers')->nullable();
+            $table->string('header_referer', 2048)->nullable();
             $table->json('query_params')->nullable();
             $table->timestamps();
 

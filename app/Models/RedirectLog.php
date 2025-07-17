@@ -9,6 +9,14 @@ class RedirectLog extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'redirect_id',
+        'ip',
+        'user_agent',
+        'header_referer',
+        'query_params'
+    ];
+
     public function redirect()
     {
         return $this->belongsTo(Redirect::class);
