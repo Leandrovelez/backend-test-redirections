@@ -41,7 +41,11 @@ class RedirectController extends Controller
      */
     public function show(Redirect $redirect)
     {
-        return redirect()->route('home');
+        $data = $redirect->toArray();
+        $data['code'] = $redirect->code;
+        unset($data['id']);
+
+        return response()->json($data);
     }
 
     /**

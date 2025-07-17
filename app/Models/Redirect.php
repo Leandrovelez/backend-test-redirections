@@ -23,4 +23,15 @@ class Redirect extends Model
     public function logs(){
         return $this->hasMany(RedirectLog::class);
     }
+
+    public function resolveRouteBinding($value, $field = null)
+    {
+        $ids = Hashids::decode($value);
+
+        if (count($ids) === 0) {
+            return null;
+        }
+        
+        return $this->where('id', $ids[0])->first();
+    }
 }
