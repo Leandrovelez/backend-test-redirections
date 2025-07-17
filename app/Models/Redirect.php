@@ -10,7 +10,7 @@ use Vinkla\Hashids\Facades\Hashids;
 class Redirect extends Model
 {
     use HasFactory;
-    //use SoftDeletes;
+    use SoftDeletes;
 
     protected $fillable = [
         'url',

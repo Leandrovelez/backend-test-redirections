@@ -164,9 +164,13 @@ class RedirectController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function delete(Redirect $redirect)
+    public function destroy(Redirect $redirect)
     {
-        return redirect()->route('home');
+        if($redirect->delete()) {
+            return response()->json(['message' => 'Redirect deletado com sucesso'], 200);
+        } else {
+            return response()->json(['message' => 'Erro ao deletar o redirect'], 500);
+        }
     }
 
      /**
