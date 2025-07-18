@@ -106,7 +106,7 @@ class RedirectController extends Controller
             return response()->json(['message' => 'Erro ao criar o redirect'], 500);
         } catch (ConnectionException | RequestException $e) {
             return response()->json([
-                'message' => 'Não foi possível acessar a URL informada.'
+                'message' => 'A URL deve retornar status 200 ou 201.'
             ], 422);
         } catch (\Exception $e) {
             return response()->json([
@@ -151,7 +151,7 @@ class RedirectController extends Controller
             return response()->json(['message' => 'Erro ao criar o redirect'], 500);
         } catch (ConnectionException | RequestException $e) {
             return response()->json([
-                'message' => 'Não foi possível acessar a URL informada.'
+                'message' => 'A URL deve retornar status 200 ou 201.'
             ], 422);
         } catch (\Exception $e) {
             return response()->json([
@@ -181,32 +181,28 @@ class RedirectController extends Controller
      * @return array
      */
     public function urlValidation($url){
-        $response = Http::get($url);
-            
-        if ($response->notFound()) {
-            return ['isValid' => false, 'message' => 'A URL não foi encontrada (404)'];
-        }
-
-        if ($response->forbidden()) {
-            return ['isValid' => false, 'message' => 'A URL retornou acesso proibido (403)'];
-        }
-
-        if (!$response->ok()) {
-            return ['isValid' => false, 'message' => 'A URL não está acessível. Status retornado: ' . $response->status()];
-        }
-
-        if (strpos($url, 'http://') === 0) {
-            return ['isValid' => false, 'message' => 'A URL deve ser https'];
-        }
-
         $appHost = parse_url(config('app.url'), PHP_URL_HOST);
         $urlHost = parse_url($url, PHP_URL_HOST);
-        
         if ($appHost === $urlHost) {
             return ['isValid' => false, 'message' => 'A URL não pode apontar para a própria aplicação.'];
         }
 
-        return ['isValid' => true, 'message' => 'A URL é válida.'];
+        if (strpos($url, 'http://') === 0) {
+            return ['isValid' => false, 'message' => 'A URL deve ser https.'];
+        }
+
+        $response = Http::get($url);
+
+        if ($response->notFound()) {
+            return ['isValid' => false, 'message' => 'A URL não foi encontrada (404).'];
+        }
+
+        if ($response->ok() || $response->created()){
+            return ['isValid' => true, 'message' => 'A URL é válida.'];
+        } else {
+            return ['isValid' => false, 'message' => 'A URL deve retornar status 200 ou 201.']; 
+            
+        }
     }
 
     /**

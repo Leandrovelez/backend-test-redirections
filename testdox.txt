@@ -1,0 +1,14 @@
+Example (Tests\Unit\Example)
+ [x] That true is true
+
+Example (Tests\Feature\Example)
+ [x] The application returns a successful response
+
+Redirect (Tests\Feature\Redirect)
+ [x] Cria redirect com url valida
+ [x] Cria redirect com dns invalido
+ [x] Cria redirect com url invalida
+ [x] Cria redirect com url apontando para aplicacao
+ [x] Cria redirect com url sem https
+ [x] Cria redirect com url status diferente de 200 ou 201
+
