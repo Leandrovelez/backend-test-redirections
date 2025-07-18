@@ -10,7 +10,13 @@ use Vinkla\Hashids\Facades\Hashids;
 
 class RedirectController extends Controller
 {
-    public function index(Redirect $redirect, Request $request){
+    /**
+     * Fetch all logs of a redirect 
+     *
+     * @return \Illuminate\Http\RedirectResponse 
+     */
+    public function index(Redirect $redirect, Request $request)
+    {
         $originalQuery = [];
         $originalQueryString = parse_url($redirect->url, PHP_URL_QUERY);
 

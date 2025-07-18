@@ -37,7 +37,7 @@ class RedirectController extends Controller
     /**
      * Fetch all redirects
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(PaginateRequest $request)
     {
@@ -59,7 +59,7 @@ class RedirectController extends Controller
     /**
      * Fetch one redirect
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(Redirect $redirect)
     {
@@ -73,7 +73,7 @@ class RedirectController extends Controller
     /**
      * Create a new redirect
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -118,7 +118,7 @@ class RedirectController extends Controller
     /**
      * Update a redirect
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Redirect $redirect, Request $request)
     {
@@ -163,7 +163,7 @@ class RedirectController extends Controller
     /**
      * Delete a redirect
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Redirect $redirect)
     {
@@ -206,5 +206,37 @@ class RedirectController extends Controller
         }
 
         return ['isValid' => true, 'message' => 'A URL é válida.'];
+    }
+
+    /**
+     * Search for redirection statistics
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function stats(Redirect $redirect, Request $request)
+    {
+
+    }
+    
+    /**
+     * Fetch all logs of a redirect
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logs(Redirect $redirect, PaginateRequest $request)
+    {
+        $request->validated();
+
+        $perPage = $request->query('per_page', 10);
+        $redirectLogs = $redirect->logs()->paginate($perPage);
+
+        $redirectLogs->getCollection()->transform(function ($log) {
+            $data = $log->toArray();
+            $data['redirect_code'] = $log->redirect->code;
+            unset($data['redirect_id']);
+            return $data;
+        });
+    
+        return response()->json($redirectLogs);
     }
 }
