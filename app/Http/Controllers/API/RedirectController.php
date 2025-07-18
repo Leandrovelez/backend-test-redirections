@@ -8,6 +8,7 @@ use App\Models\Redirect;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Vinkla\Hashids\Facades\Hashids;
@@ -213,9 +214,36 @@ class RedirectController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function stats(Redirect $redirect, Request $request)
+    public function stats(Redirect $redirect)
     {
+        $total = $redirect->logs()->count();
+        $totalUnique = $redirect->logs()->distinct('ip')->count('ip');
 
+        $topReferer = $redirect->logs()
+            ->select('header_referer', DB::raw('count(*) as total'))
+            ->whereNotNull('header_referer')
+            ->groupBy('header_referer')
+            ->orderByDesc('total')
+            ->limit(1)
+            ->get();
+
+        $last10DaysLogs = $redirect->logs()
+            ->select(
+                DB::raw('DATE(created_at) as date'),
+                DB::raw('count(*) as total'),
+                DB::raw('count(distinct ip) as unique_ips')
+            )
+            ->where('created_at', '>=', now()->subDays(10)->startOfDay())
+            ->groupBy(DB::raw('DATE(created_at)'))
+            ->orderBy('date', 'desc')
+            ->get();
+
+        return response()->json([
+            'total_access' => $total,
+            'total_unique_ip' => $totalUnique,
+            'top_referer' => $topReferer,
+            'last_10_days' => $last10DaysLogs,
+        ]);
     }
     
     /**
