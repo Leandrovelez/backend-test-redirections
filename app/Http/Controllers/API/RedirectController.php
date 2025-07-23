@@ -169,6 +169,8 @@ class RedirectController extends Controller
     public function destroy(Redirect $redirect)
     {
         if($redirect->delete()) {
+            $redirect->status = 'inativo';
+            $redirect->save();
             return response()->json(['message' => 'Redirect deletado com sucesso'], 200);
         } else {
             return response()->json(['message' => 'Erro ao deletar o redirect'], 500);
