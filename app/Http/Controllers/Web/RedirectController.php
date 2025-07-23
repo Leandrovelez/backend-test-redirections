@@ -45,6 +45,9 @@ class RedirectController extends Controller
             'user_agent' => $request->header('user-agent')
         ]);
 
+        $redirect->last_redirect_at = now();
+        $redirect->save();
+
         return redirect()->away($finalUrl);
     }
 }
