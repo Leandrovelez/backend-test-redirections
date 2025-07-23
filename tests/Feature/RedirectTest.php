@@ -8,8 +8,6 @@ use Tests\TestCase;
 
 class RedirectTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function test_cria_redirect_com_url_valida()
     {
         $response = $this->postJson('/api/redirects', [
